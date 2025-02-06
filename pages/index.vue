@@ -251,8 +251,8 @@
             {{ error }}
             </div>
             <div v-else>
-                <div v-if="cargoTrackings.length === 0">
-                    <p>Ачааны хяналтын олдсонгүй.</p>
+                <div v-if="cargoTrackings[0] == undefined">
+                    <p>Ачаа олдсонгүй.</p>
                 </div>
                 <div v-else>
                     <div v-for="cargo in cargoTrackings" :key="cargo.id" class="cargo-item">
@@ -375,19 +375,26 @@ const handleAddTrack=async()=>{
         })
 
         if (!response.ok) {
-        const error = await response.json()
-        alert(error.message)
-        return
+            const error = await response.json()
+            alert(error.message)
+            return
+        }
+
+        const data = response.json()
+
+        if (data.statusCode === 406) {
+            alert(data.message)
+            return
         }
 
         // console.log(user)
+        addTrackModal.value = false
         alert('Амжилттай нэмэгдлээ!')
-        addTrackModal = false
         fetchCargoTrackingData();
 
     } catch (err) {
         console.error('Бүртгэл амжилтгүй:', err)
-        // alert('Бүртгэл амжилтгүй.')
+        alert(err.message)
         
     } finally {
         loading.value = false
@@ -425,9 +432,11 @@ const fetchCargoTrackingData = async () => {
 
     const data = await response.json();
     cargoTrackings.value = data.body || [];
-    for(const cargo of cargoTrackings.value){
-        if(cargo.price){
-            totalPrice.value = totalPrice.value+parseInt(cargo.price)
+    if(cargoTrackings.value[0]){
+        for(const cargo of cargoTrackings.value){
+            if(cargo.price){
+                totalPrice.value = totalPrice.value+parseInt(cargo.price)
+            }
         }
     }
   } catch (err) {

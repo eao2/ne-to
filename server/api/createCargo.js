@@ -32,6 +32,16 @@ export default defineEventHandler(async (event) => {
 
     await prisma.$connect()
 
+    const checkExist = await prisma.cargoTracking.findUnique({
+      where: {
+        trackingNumber: body.trackingNumber.trim()
+      }
+    })
+
+    if(checkExist){
+      return { statusCode: 406, body: { message: 'Аль хэдийн бүртгэгдсэн байна' } }
+    }
+
     // Insert new cargo
     const newCargo = await prisma.cargoTracking.create({
       data: {
