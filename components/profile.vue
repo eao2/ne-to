@@ -1,7 +1,6 @@
 <template>
   <div v-if="user">
     <h1>Welcome, User!</h1>
-    <p><strong>surName:</strong> {{ user.surName }}</p>
     <p><strong>name:</strong> {{ user.name }}</p>
     <p><strong>Phone Number:</strong> {{ user.phoneNumber }}</p>
     <p><strong>Email:</strong> {{ user?.email }}</p>

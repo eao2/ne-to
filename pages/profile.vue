@@ -1,6 +1,5 @@
 <template>
   <div v-if="user">
-    <p><strong>овог:</strong> {{ user.surName }}</p>
     <p><strong>нэр:</strong> {{ user.name }}</p>
     <p><strong>утасны дугаар:</strong> {{ user.phoneNumber }}</p>
     <p><strong>э-мэйл:</strong> {{ user?.email }}</p>

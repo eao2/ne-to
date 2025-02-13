@@ -21,15 +21,9 @@
     <div class="register-form">
       <h2>Бүртгүүлэх</h2>
 
-      <div class="name-fields">
-        <div class="input-group half">
-          <label>Овог</label>
-          <input type="text" v-model="form.surName" placeholder="Пүрэв"/>
-        </div>
-        <div class="input-group half">
-          <label>Нэр</label>
-          <input type="text" v-model="form.name" placeholder="Болд"/>
-        </div>
+      <div class="input-group">
+        <label>Нэр</label>
+        <input type="text" v-model="form.name" placeholder="Болд"/>
       </div>
 
       <div class="input-group">
@@ -160,7 +154,6 @@ const isConfirmPasswordValid = ref(true)
 
 
 const form = ref({
-  surName: '',
   name: '',
   phoneNumber: '',
   email: '',
@@ -194,7 +187,7 @@ const handleRegister = async () => {
   validateConfirmPassword();
 
   // Basic validation
-  if (!form.value.surName.trim() || !form.value.name.trim()) {
+  if (!form.value.name.trim()) {
     alert('Нэрээ оруулна уу')
     return
   }
@@ -227,7 +220,6 @@ const handleRegister = async () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        surName: form.value.surName,
         name: form.value.name,
         phoneNumber: form.value.phoneNumber,
         email: form.value.email,

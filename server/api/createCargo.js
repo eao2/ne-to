@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
     // Insert new cargo
     const newCargo = await prisma.cargoTracking.create({
       data: {
-        trackingNumber: body.trackingNumber,
+        trackingNumber: body.trackingNumber.trim(),
         nickname: body.nickname ? body.nickname : null,
         cargoType: body.cargoType || "NORMAL",
         price: null,

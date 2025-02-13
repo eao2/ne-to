@@ -391,6 +391,9 @@ const handleAddTrack=async()=>{
         addTrackModal.value = false
         alert('Амжилттай нэмэгдлээ!')
         fetchCargoTrackingData();
+        form.value.nickname = ''
+        form.value.cargoType = 'NORMAL'
+        form.value.trackingNumber = ''
 
     } catch (err) {
         console.error('Бүртгэл амжилтгүй:', err)

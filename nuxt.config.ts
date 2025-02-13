@@ -1,6 +1,5 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devServer:{
+  devServer: {
     port: 3030,
     host: '0.0.0.0',
   },
@@ -15,7 +14,7 @@ export default defineNuxtConfig({
       meta: [
         {
           name: 'description',
-          content: 'Манайх БНХУ-ын бүх хотуудаас бүх төрлийн ачаа барааг Монгол улслуу тээвэрлэх үйлчилгээг үзүүлдэг ба Таны ачааг эрээн хотоос шуурхай экспрэсс үйлчилгээгээр 1 хоногт авчирдаг боллоо.' 
+          content: 'Манайх БНХУ-ын бүх хотуудаас бүх төрлийн ачаа барааг Монгол улслуу тээвэрлэх үйлчилгээг үзүүлдэг ба Таны ачааг эрээн хотоос шуурхай экспрэсс үйлчилгээгээр 1 хоногт авчирдаг боллоо.'
         },
         {
           name: 'theme-color',
@@ -24,9 +23,36 @@ export default defineNuxtConfig({
         {
           name: 'apple-mobile-web-app-status-bar-style',
           content: 'black-translucent'
-        }
+        },
+        // Open Graph meta tags
+        {
+          property: 'og:title',
+          content: 'NE-TO cargo'
+        },
+        {
+          property: 'og:description',
+          content: 'Манайх БНХУ-ын бүх хотуудаас бүх төрлийн ачаа барааг Монгол улслуу тээвэрлэх үйлчилгээг үзүүлдэг ба Таны ачааг эрээн хотоос шуурхай экспрэсс үйлчилгээгээр 1 хоногт авчирдаг боллоо.'
+        },
+        {
+          property: 'og:image',
+          content: 'https://ne-to.com/og-image.jpg'
+        },
+        {
+          property: 'og:image:alt',
+          content: 'NE-TO cargo image'
+        },
+        {
+          property: 'og:type',
+          content: 'website'
+        },
+        {
+          property: 'og:url',
+          content: 'https://ne-to.com'
+        },
       ],
-      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      ]
     }
   }
 })

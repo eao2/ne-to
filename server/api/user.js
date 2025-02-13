@@ -28,7 +28,6 @@ export default defineEventHandler(async (event) => {
       where: { id: decoded.userId },
       select: {
         id: true,
-        surName: true,
         name: true,
         phoneNumber: true,
         email: true,
