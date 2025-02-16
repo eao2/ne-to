@@ -324,4 +324,30 @@
             }
         }
     }
+
+    .title{
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+    }
+    .filter-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      
+    .filter-button {
+        padding: 6px 12px;
+        border-radius: 1rem;
+        background-color: #ffffff;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s ease;
+    }
+        
+    .active-filter {
+        background: #007bff;
+        color: #fff;
+    }
 }

@@ -183,7 +183,7 @@
                             </defs>
                         </svg>
                     </span>
-                    Энэ нэр нь зөвхөн танд харагдах болно. Мөн хоосон үлдээж болно.
+                    Хоосон үлдээж болно.
                 </p>
                 <div class="input-field">
                     <input type="text" placeholder="Ачааны Нэр" v-model="form.nickname"/>
@@ -245,24 +245,72 @@
         </div>
 
         <div class="cargos">
-            <h3 class="total-price">Нийт: <span>{{totalPrice}}₮</span></h3>
+            <h3 class="total-price">Нийт: <span>{{numberWithCommas(totalPrice)}} ₮</span></h3>
+            <!-- New Filter Buttons Section -->
+            <h3 class="title">Төлөв:</h3>
+            <div class="filter-buttons">
+                <button 
+                    @click="activeFilter = null" 
+                    :class="activeFilter === null ? 'active-filter' : ''"
+                    class="filter-button"
+                >
+                    Бүгд
+                </button>
+                <button 
+                    @click="activeFilter = 'DELIVERED_TO_UB'" 
+                    :class="activeFilter === 'DELIVERED_TO_UB' ? 'active-filter' : ''"
+                    class="filter-button"
+                >
+                    Улаанбаатар-д ирсэн
+                </button>
+                <button 
+                    @click="activeFilter = 'IN_TRANSIT'" 
+                    :class="activeFilter === 'IN_TRANSIT' ? 'active-filter' : ''"
+                    class="filter-button"
+                >
+                    Эрээн-с гарсан
+                </button>
+                <button 
+                    @click="activeFilter = 'RECEIVED_AT_ERENHOT'" 
+                    :class="activeFilter === 'RECEIVED_AT_ERENHOT' ? 'active-filter' : ''"
+                    class="filter-button"
+                >
+                    Эрээн-д ирсэн
+                </button>
+                <button 
+                    @click="activeFilter = 'PRE_REGISTERED'" 
+                    :class="activeFilter === 'PRE_REGISTERED' ? 'active-filter' : ''"
+                    class="filter-button"
+                >
+                    Урьдчилан бүртгүүлсэн
+                </button>
+                <button 
+                    @click="activeFilter = 'DELIVERED'" 
+                    :class="activeFilter === 'DELIVERED' ? 'active-filter' : ''"
+                    class="filter-button"
+                >
+                    Бараа хүлээлгэн өгсөн
+                </button>
+            </div>
+
             <div v-if="loading">Loading...</div>
             <div v-else-if="error" class="error">
             {{ error }}
             </div>
             <div v-else>
-                <div v-if="cargoTrackings[0] == undefined">
+                <div v-if="filteredAndSortedCargos.length === 0">
                     <p>Ачаа олдсонгүй.</p>
                 </div>
                 <div v-else>
-                    <div v-for="cargo in cargoTrackings" :key="cargo.id" class="cargo-item">
+                    <h4 class="title">Тракууд</h4>
+                    <div v-for="cargo in filteredAndSortedCargos" :key="cargo.id" class="cargo-item">
                         <a :href="`/track/${cargo.trackingNumber}`">
                             <div class="cargo-lnk">
                                 <div class="ttl">
                                     <p class="id">{{ cargo.nickname ? cargo.nickname : cargo.trackingNumber }}</p>
                                     <div class="stat"> {{ currentStatus(cargo.currentStatus) }}</div>
                                 </div>
-                                <div class="price" v-if="cargo.price"><p>Төлбөр:</p><p>{{ cargo.price }}₮</p></div>
+                                <div class="price" v-if="cargo.currentStatus=='DELIVERED_TO_UB' && cargo.price"><p>Төлбөр:</p><p>{{ numberWithCommas(cargo.price) }}₮</p></div>
                             </div>
                         </a>
                     </div>
@@ -273,6 +321,8 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
 const router = useRouter()
 
@@ -286,6 +336,8 @@ const form = ref({
     trackingNumber: ''
 })
 
+// Add activeFilter ref for tracking the selected filter
+const activeFilter = ref(null);
 
 function currentStatus(status){
   switch (status) {
@@ -315,6 +367,10 @@ const trackCode = ref('')
 const token = ref('')
 
 const addTrackModal = ref(false)
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 const addTrackModalToggle=()=>{
     addTrackModal.value = !addTrackModal.value;
@@ -351,16 +407,34 @@ const cargoTrackings = ref([]);
 const loading = ref(true);
 const error = ref(null);
 
-// onMounted(async ()=>{
+// New computed property for filtered and sorted cargos
+const filteredAndSortedCargos = computed(() => {
+    // First filter by the active filter if one is selected
+    let result = activeFilter.value 
+        ? cargoTrackings.value.filter(cargo => cargo.currentStatus === activeFilter.value)
+        : [...cargoTrackings.value];
+    
+    // Then sort according to the specified order
+    const statusPriority = {
+        'DELIVERED_TO_UB': 1,
+        'IN_TRANSIT': 2,
+        'RECEIVED_AT_ERENHOT': 3,
+        'PRE_REGISTERED': 4,
+        'DELIVERED': 5
+    };
+    
+    return result.sort((a, b) => {
+        return statusPriority[a.currentStatus] - statusPriority[b.currentStatus];
+    });
+});
 
-const handleAddTrack=async()=>{
-
+const handleAddTrack = async() => {
     const token = localStorage.getItem('authToken');
     if (!token) {
       throw new Error('No authentication token found. Please log in.');
     }
 
-        try {
+    try {
         const response = await fetch('/api/createCargo', {
             method: 'POST',
             headers: {
@@ -387,7 +461,6 @@ const handleAddTrack=async()=>{
             return
         }
 
-        // console.log(user)
         addTrackModal.value = false
         alert('Амжилттай нэмэгдлээ!')
         fetchCargoTrackingData();
@@ -402,16 +475,13 @@ const handleAddTrack=async()=>{
     } finally {
         loading.value = false
     }
-    
-    }
-// })
+}
 
 // Function to format dates
 const formatDate = (dateString) => {
   if (!dateString) return 'N/A';
   return new Date(dateString).toLocaleString();
 };
-
 
 // Fetch cargo tracking data
 const fetchCargoTrackingData = async () => {
@@ -435,10 +505,14 @@ const fetchCargoTrackingData = async () => {
 
     const data = await response.json();
     cargoTrackings.value = data.body || [];
-    if(cargoTrackings.value[0]){
+    
+    // Reset totalPrice before recalculating
+    totalPrice.value = 0;
+    
+    if(cargoTrackings.value.length > 0){
         for(const cargo of cargoTrackings.value){
-            if(cargo.price){
-                totalPrice.value = totalPrice.value+parseInt(cargo.price)
+            if(cargo.price && cargo.currentStatus == 'DELIVERED_TO_UB'){
+                totalPrice.value = totalPrice.value + parseInt(cargo.price)
             }
         }
     }
