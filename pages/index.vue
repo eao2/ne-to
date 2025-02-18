@@ -308,7 +308,7 @@
                             <div class="cargo-lnk">
                                 <div class="ttl">
                                     <p class="id">{{ cargo.nickname ? cargo.nickname : cargo.trackingNumber }}</p>
-                                    <div class="stat"> {{ currentStatus(cargo.currentStatus) }}</div>
+                                    <div class="stat" :class="cargo.currentStatus=='DELIVERED_TO_UB' && 'highlight'"> {{ currentStatus(cargo.currentStatus) }}</div>
                                 </div>
                                 <div class="price" v-if="cargo.currentStatus=='DELIVERED_TO_UB' && cargo.price"><p>Төлбөр:</p><p>{{ numberWithCommas(cargo.price) }}₮</p></div>
                             </div>
