@@ -59,7 +59,7 @@ export default defineEventHandler(async (event) => {
       if (existingEmailUser && existingEmailUser.phoneNumber !== phoneNumber) {
         throw createError({
           statusCode: 409,
-          message: 'Энэ имэйл аль хэдийн өөр хэрэглэгчид ашиглагдаж байна.',
+          message: 'Энэ имэйл аль хэдийн өөр хэрэглэгч дээр ашиглагдаж байна.',
         })
       }
     }

@@ -37,9 +37,9 @@
                         Хаяг холбох
                     </div>
                 </a>
-                <a href="/price">
-                    <div class="item" :class="route.path == '/price' ? 'active' : ''">
-                        Үнийн мэдээлэл
+                <a href="/calculator">
+                    <div class="item" :class="route.path == '/calculator' ? 'active' : ''">
+                        Тооцоолуур
                     </div>
                 </a>
             </div>
