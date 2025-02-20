@@ -5,22 +5,22 @@
         <div class="address-section">
           <h3>ЭНГИЙН ТЭЭВЭР</h3>
           <div class="copy-rows">
-            1-р Эгнээ: 
+            1-р Эгнээ : 收件人 (Хүлээн авагч)
             <div class="copy-row">
               <span>速</span>
               <button @click="copyText('速')" class="copy-btn">Хуулах</button>
             </div>
-            2-р Эгнээ: 
+            2-р Эгнээ : 手机号 (Утас)
             <div class="copy-row">
               <span>15734796400</span>
               <button @click="copyText('15734796400')" class="copy-btn">Хуулах</button>
             </div>
-            3-р Эгнээ: 
+            3-р Эгнээ : 地区 (Бүс нутаг)
             <div class="copy-row">
               <span>内蒙古自治区锡林郭勒盟二连浩特市</span>
               <button @click="copyText('内蒙古自治区锡林郭勒盟二连浩特市')" class="copy-btn">Хуулах</button>
             </div>
-            4-р Эгнээ: 
+            4-р Эгнээ : 详细地址 (Хаяг)
             <div class="copy-row">
               <span>内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号 ({{ user.name }}, {{ user.phoneNumber }})</span>
               <button @click="copyText(`内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号 (${user.name}, ${user.phoneNumber})`)" class="copy-btn">Хуулах</button>
@@ -31,22 +31,22 @@
         <div class="address-section">
           <h3>ШУУРХАЙ ТЭЭВЭР</h3>
           <div class="copy-rows">
-            1-р Эгнээ: 
+            1-р Эгнээ : 收件人 (Хүлээн авагч)
             <div class="copy-row">
               <span>S</span>
               <button @click="copyText('S')" class="copy-btn">Хуулах</button>
             </div>
-            2-р Эгнээ: 
+            2-р Эгнээ : 手机号 (Утас)
             <div class="copy-row">
               <span>15734796400</span>
               <button @click="copyText('15734796400')" class="copy-btn">Хуулах</button>
             </div>
-            3-р Эгнээ: 
+            3-р Эгнээ : 地区 (Бүс нутаг)
             <div class="copy-row">
               <span>内蒙古自治区锡林郭勒盟二连浩特市</span>
               <button @click="copyText('内蒙古自治区锡林郭勒盟二连浩特市')" class="copy-btn">Хуулах</button>
             </div>
-            4-р Эгнээ: 
+            4-р Эгнээ : 详细地址 (Хаяг)
             <div class="copy-row">
               <span>内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号 ({{ user.name }}, {{ user.phoneNumber }})</span>
               <button @click="copyText(`内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号 (${user.name}, ${user.phoneNumber})`)" class="copy-btn">Хуулах</button>
