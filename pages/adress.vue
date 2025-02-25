@@ -124,14 +124,14 @@ const copyText = async (text) => {
 }
 
 onMounted(async () => {
-    const token = localStorage.getItem('authToken');
-
-    if (!token) {
-        isLoggedIn.value = false;
-        return;
-    }
-
     try {
+      const token = localStorage.getItem('authToken');
+
+      if (!token) {
+          isLoggedIn.value = false;
+          console.log('No token found - user not logged in');
+          return;
+      }
         const response = await fetch('/api/user', {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -146,6 +146,8 @@ onMounted(async () => {
         if (data.body?.name) {
             user.value = data.body;
             isLoggedIn.value = true;
+        } else {
+            isLoggedIn.value = false;
         }
     } catch (error) {
         console.error('Error fetching user information:', error);
