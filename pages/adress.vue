@@ -125,13 +125,14 @@ const copyText = async (text) => {
 
 onMounted(async () => {
     try {
-      const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('authToken');
 
-      if (!token) {
-          isLoggedIn.value = false;
-          console.log('No token found - user not logged in');
-          return;
-      }
+        if (!token) {
+            isLoggedIn.value = false;
+            console.log('No token found - user not logged in');
+            return;
+        }
+
         const response = await fetch('/api/user', {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -154,6 +155,8 @@ onMounted(async () => {
         isLoggedIn.value = false;
     }
 });
+
+
 </script>
   
   <style scoped lang="scss">
