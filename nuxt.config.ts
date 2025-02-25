@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   devServer: {
-    port: 3030,
+    port: 3000,
     host: '0.0.0.0',
   },
   compatibilityDate: '2024-11-01',

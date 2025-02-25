@@ -22,8 +22,8 @@
             </div>
             4-р Эгнээ : 详细地址 (Хаяг)
             <div class="copy-row">
-              <span>内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号 ({{ user.name }}, {{ user.phoneNumber }})</span>
-              <button @click="copyText(`内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号 (${user.name}, ${user.phoneNumber})`)" class="copy-btn">Хуулах</button>
+              <span>内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号{{ isLoggedIn ? ` (${user.name}, ${user.phoneNumber})` : '(Нэр, Утасны дугаар)' }}</span>
+              <button @click="copyText(`内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号${isLoggedIn ? ` (${user.name}, ${user.phoneNumber})` : '(Нэр, Утасны дугаар)'}`)" class="copy-btn">Хуулах</button>
             </div>
           </div>
         </div>
@@ -48,8 +48,8 @@
             </div>
             4-р Эгнээ : 详细地址 (Хаяг)
             <div class="copy-row">
-              <span>内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号 ({{ user.name }}, {{ user.phoneNumber }})</span>
-              <button @click="copyText(`内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号 (${user.name}, ${user.phoneNumber})`)" class="copy-btn">Хуулах</button>
+              <span>内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号{{ isLoggedIn ? ` (${user.name}, ${user.phoneNumber})` : '(Нэр, Утасны дугаар)' }}</span>
+              <button @click="copyText(`内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号${isLoggedIn ? ` (${user.name}, ${user.phoneNumber})` : '(Нэр, Утасны дугаар)'}`)" class="copy-btn">Хуулах</button>
             </div>
           </div>
         </div>
@@ -100,73 +100,58 @@
   </template>
   
 <script setup>
-  import { ref } from 'vue'
-  import { Swiper, SwiperSlide } from 'swiper/vue'
-  import { Navigation, Pagination } from 'swiper/modules'
-  import 'swiper/css'
-  import 'swiper/css/navigation'
-  import 'swiper/css/pagination'
-  
-  const user=ref({
-    "name": 'Нэр',
-    "phoneNumber": 'Утасны дугаар'
-  })
-  const selectedPlatform = ref('pinduoduo')
-  
-  const copyText = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      alert(`Амжилттай хууллаа! \n${text}`)
-    } catch (err) {
-      alert('Хуулж чадсангүй!')
-    }
-  }
+import { ref, onMounted } from 'vue'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Navigation, Pagination } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
+const user = ref({
+    "name": '',
+    "phoneNumber": ''
+})
+const selectedPlatform = ref('pinduoduo')
+const isLoggedIn = ref(false)
+
+const copyText = async (text) => {
+    try {
+        await navigator.clipboard.writeText(text)
+        alert(`Амжилттай хууллаа! \n${text}`)
+    } catch (err) {
+        alert('Хуулж чадсангүй!')
+    }
+}
 
 onMounted(async () => {
-
     const token = localStorage.getItem('authToken');
 
     if (!token) {
-    console.error('No token found. Redirecting to login...');
-    router.push('/login');
-    return;
+        isLoggedIn.value = false;
+        return;
     }
 
     try {
-    const response = await fetch('/api/user', {
-        headers: {
-        Authorization: `Bearer ${token}`,
-        },
-    });
+        const response = await fetch('/api/user', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
 
-    if (response.status === 401) {
-        console.error('Unauthorized access. Redirecting to login...');
-        router.push('/login');
-        return;
-    }
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-    if (response.status === 404) {
-        console.error('User not found. Redirecting to login...');
-        router.push('/login');
-        return;
-    }
-
-    if (!response.ok) {
-        console.error(`Unexpected error: ${response.statusText}`);
-        return;
-    }
-
-    const data = await response.json();
-    if(data.body.name){
-        user.value = data.body; // Ensure the correct structure from your API
-    }
+        const data = await response.json();
+        if (data.body?.name) {
+            user.value = data.body;
+            isLoggedIn.value = true;
+        }
     } catch (error) {
         console.error('Error fetching user information:', error);
-        router.push('/login');
+        isLoggedIn.value = false;
     }
 });
-
 </script>
   
   <style scoped lang="scss">
