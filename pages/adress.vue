@@ -194,7 +194,7 @@ onMounted(async () => {
     background: #f5f5f5;
     border-radius: 8px;
   }
-  
+
   .copy-btn {
     padding: 0.5rem 12px;
     background: #0066ff;
@@ -203,31 +203,31 @@ onMounted(async () => {
     border-radius: 0.25rem;
     cursor: pointer;
     transition: background 0.3s;
-  
+
     &:hover {
       background: #0066ff;
     }
   }
-  
+
   .platform-selector {
     display: flex;
     justify-content: center;
     gap: 1rem;
     margin-bottom: 1rem;
   }
-  
+
   .selector-btn {
     padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
     background: white;
     cursor: pointer;
     transition: all 0.3s;
-  
+
     &.active {
       background: #0066ff;
       color: white;
     }
-  
+
   }
   
   .image-swiper {

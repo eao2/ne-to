@@ -293,26 +293,33 @@
                 </button>
             </div>
 
-            <div v-if="loading">Loading...</div>
-            <div v-else-if="error" class="error">
-            {{ error }}
+            <div v-if="loading" class="loading-state">
+                <p>Loading...</p>
+            </div>
+            <div v-else-if="error" class="error-state">
+                {{ error }}
             </div>
             <div v-else>
-                <div v-if="filteredAndSortedCargos.length === 0">
-                    <p>Ачаа олдсонгүй.</p>
+                <h4 class="title">Тракууд</h4>
+                <div v-if="cargoTrackings.length === 0" class="empty-state">
+                    <p>Бүртгэлтэй ачаа байхгүй байна.</p>
                 </div>
                 <div v-else>
-                    <h4 class="title">Тракууд</h4>
-                    <div v-for="cargo in filteredAndSortedCargos" :key="cargo.id" class="cargo-item">
-                        <a :href="`/track/${cargo.trackingNumber}`">
-                            <div class="cargo-lnk">
-                                <div class="ttl">
-                                    <p class="id">{{ cargo.nickname ? cargo.nickname : cargo.trackingNumber }}</p>
-                                    <div class="stat" :class="cargo.currentStatus=='DELIVERED_TO_UB' && 'highlight'"> {{ currentStatus(cargo.currentStatus) }}</div>
+                    <div v-if="filteredAndSortedCargos.length === 0" class="empty-state">
+                        <p>Шүүлтэд тохирох ачаа олдсонгүй.</p>
+                    </div>
+                    <div v-else>
+                        <div v-for="cargo in filteredAndSortedCargos" :key="cargo.id" class="cargo-item">
+                            <a :href="`/track/${cargo.trackingNumber}`">
+                                <div class="cargo-lnk">
+                                    <div class="ttl">
+                                        <p class="id">{{ cargo.nickname ? cargo.nickname : cargo.trackingNumber }}</p>
+                                        <div class="stat" :class="cargo.currentStatus=='DELIVERED_TO_UB' && 'highlight'"> {{ currentStatus(cargo.currentStatus) }}</div>
+                                    </div>
+                                    <div class="price" v-if="cargo.currentStatus=='DELIVERED_TO_UB' && cargo.price"><p>Төлбөр:</p><p>{{ numberWithCommas(cargo.price) }}₮</p></div>
                                 </div>
-                                <div class="price" v-if="cargo.currentStatus=='DELIVERED_TO_UB' && cargo.price"><p>Төлбөр:</p><p>{{ numberWithCommas(cargo.price) }}₮</p></div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -446,36 +453,29 @@ const handleAddTrack = async() => {
                 cargoType: form.value.cargoType,
                 trackingNumber: form.value.trackingNumber
             }),
-        })
+        });
+
+        const data = await response.json();
 
         if (!response.ok) {
-            const error = await response.json()
-            alert(error.message)
-            return
+            alert(data.body?.message || data.message || 'Алдаа гарлаа');
+            return;
         }
 
-        const data = response.json()
-
-        if (data.statusCode === 406) {
-            alert(data.message)
-            return
-        }
-
-        addTrackModal.value = false
-        alert('Амжилттай нэмэгдлээ!')
-        fetchCargoTrackingData();
-        form.value.nickname = ''
-        form.value.cargoType = 'NORMAL'
-        form.value.trackingNumber = ''
+        addTrackModal.value = false;
+        alert(data.message || 'Амжилттай нэмэгдлээ!');
+        await fetchCargoTrackingData();
+        
+        // Reset form
+        form.value.nickname = '';
+        form.value.cargoType = 'NORMAL';
+        form.value.trackingNumber = '';
 
     } catch (err) {
-        console.error('Бүртгэл амжилтгүй:', err)
-        alert(err.message)
-        
-    } finally {
-        loading.value = false
+        console.error('Бүртгэл амжилтгүй:', err);
+        alert(err.message);
     }
-}
+};
 
 // Function to format dates
 const formatDate = (dateString) => {
@@ -485,14 +485,15 @@ const formatDate = (dateString) => {
 
 // Fetch cargo tracking data
 const fetchCargoTrackingData = async () => {
+  loading.value = true;  // Set loading to true at the start
+  error.value = null;    // Reset error state
+  
   try {
-    // Get the JWT token from localStorage (or cookies)
     const token = localStorage.getItem('authToken');
     if (!token) {
       throw new Error('No authentication token found. Please log in.');
     }
 
-    // Fetch data from the API
     const response = await fetch('/api/cargoTrackData', {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -500,11 +501,14 @@ const fetchCargoTrackingData = async () => {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch data: ${response.statusText}`);
+      const errorData = await response.json();
+      throw new Error(errorData.body?.message || 'Failed to fetch data');
     }
 
     const data = await response.json();
-    cargoTrackings.value = data.body || [];
+    
+    // Ensure we always have an array, even if empty
+    cargoTrackings.value = Array.isArray(data.body) ? data.body : [];
     
     // Reset totalPrice before recalculating
     totalPrice.value = 0;
@@ -517,10 +521,15 @@ const fetchCargoTrackingData = async () => {
         }
     }
   } catch (err) {
-    error.value = err.message;
-    console.error('Error fetching cargo tracking data:', err);
+    if (err.message.includes('Please log in')) {
+      // Don't show error for auth-related issues
+      cargoTrackings.value = [];
+    } else {
+      error.value = err.message;
+      console.error('Error fetching cargo tracking data:', err);
+    }
   } finally {
-    loading.value = false;
+    loading.value = false;  // Always set loading to false when done
   }
 };
 

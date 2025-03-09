@@ -42,12 +42,7 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-    // If no cargo tracking data is found, return a 404
-    if (!cargoTrackings || cargoTrackings.length === 0) {
-      return { statusCode: 404, body: { message: 'No cargo tracking data found for this user' } };
-    }
-
-    // Return cargo tracking data
+    // Return cargo tracking data (empty array if none found)
     return { statusCode: 200, body: cargoTrackings };
   } catch (err) {
     // Log the error for debugging
