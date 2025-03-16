@@ -1,6 +1,6 @@
 <template>
     <img src="/frame.png" alt="" style="width: 100%; border-radius: 1rem; margin-bottom: 12px;">
-    <section v-if="!token" >
+    <section v-if="!loggedIn" >
         <div class="checkTrack">
             <div class="title">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -344,6 +344,7 @@ const form = ref({
 })
 
 // Add activeFilter ref for tracking the selected filter
+const loggedIn = ref(false);
 const activeFilter = ref(null);
 
 function currentStatus(status){
@@ -417,10 +418,10 @@ const error = ref(null);
 // New computed property for filtered and sorted cargos
 const filteredAndSortedCargos = computed(() => {
     // First filter by the active filter if one is selected
-    let result = activeFilter.value 
+    let result = activeFilter.value
         ? cargoTrackings.value.filter(cargo => cargo.currentStatus === activeFilter.value)
         : [...cargoTrackings.value];
-    
+   
     // Then sort according to the specified order
     const statusPriority = {
         'DELIVERED_TO_UB': 1,
@@ -429,16 +430,48 @@ const filteredAndSortedCargos = computed(() => {
         'PRE_REGISTERED': 4,
         'DELIVERED': 5
     };
-    
+   
     return result.sort((a, b) => {
-        return statusPriority[a.currentStatus] - statusPriority[b.currentStatus];
+        // First sort by status priority
+        const statusDiff = statusPriority[a.currentStatus] - statusPriority[b.currentStatus];
+        
+        // If status is the same, sort by updatedAt date (newer dates first)
+        if (statusDiff === 0) {
+            return new Date(b.updatedAt) - new Date(a.updatedAt);
+        }
+        
+        return statusDiff;
     });
 });
+
+const checkUser = async() => {
+    const token = localStorage.getItem('authToken');
+
+    try {
+        const response = await fetch('/api/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            localStorage.removeItem('authToken');
+            router.push({path: '/login'})
+            return;
+        }
+    } catch (err) {
+        router.push({path: '/login'})
+    }
+};
 
 const handleAddTrack = async() => {
     const token = localStorage.getItem('authToken');
     if (!token) {
-      throw new Error('No authentication token found. Please log in.');
+        router.push({path: '/login'})
     }
 
     try {
@@ -485,12 +518,13 @@ const formatDate = (dateString) => {
 
 // Fetch cargo tracking data
 const fetchCargoTrackingData = async () => {
-  loading.value = true;  // Set loading to true at the start
-  error.value = null;    // Reset error state
+  loading.value = true;
+  error.value = null;
   
   try {
     const token = localStorage.getItem('authToken');
     if (!token) {
+      loggedIn.value = false;
       throw new Error('No authentication token found. Please log in.');
     }
 
@@ -500,11 +534,23 @@ const fetchCargoTrackingData = async () => {
       },
     });
 
+    // Check for 401 Unauthorized specifically
+    if (response.status === 401) {
+      // Token is invalid, clear it
+      localStorage.removeItem('authToken');
+      token.value = '';
+      loggedIn.value = false;
+      router.push({path: "/login"});
+      throw new Error('Session expired. Please log in again.');
+    }
+
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.body?.message || 'Failed to fetch data');
     }
 
+    // If we got here, the token is valid
+    loggedIn.value = true;
     const data = await response.json();
     
     // Ensure we always have an array, even if empty
@@ -521,21 +567,27 @@ const fetchCargoTrackingData = async () => {
         }
     }
   } catch (err) {
-    if (err.message.includes('Please log in')) {
-      // Don't show error for auth-related issues
+    if (err.message.includes('Please log in') || err.message.includes('Session expired')) {
       cargoTrackings.value = [];
+      // Router push is now handled where the error occurs
     } else {
       error.value = err.message;
       console.error('Error fetching cargo tracking data:', err);
     }
   } finally {
-    loading.value = false;  // Always set loading to false when done
+    loading.value = false;
   }
 };
 
 // Fetch data when the component is mounted
-onMounted(() => {
-  fetchCargoTrackingData();
+onMounted(async () => {
+    token.value = localStorage.getItem('authToken') || '';
+    loggedIn.value = !!token.value;
+    
+    if (token.value) {
+        await fetchCargoTrackingData();
+        await checkUser();
+    }
 });
 </script>
 

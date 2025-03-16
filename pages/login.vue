@@ -85,6 +85,11 @@
       <button class="login-button" type="submit" :disabled="loading">
         {{ loading ? 'Нэвтэрч байна...' : 'Нэвтрэх' }}
       </button>
+      <a href="/forgot-password">
+        <p class="login-link">
+          Та нууц үгээ мартсан уу? <span class="forgot-password">Нууц үг сэргээх</span>
+        </p>
+      </a>
       <br/>
       <p class="login-link">
         Та бүртгэлгүй юу?
@@ -93,7 +98,6 @@
       <a href="/register">
         <div class="login-register-button" >Бүртгүүлэх</div>
       </a>
-      
     </div>
   </div>
   </form>

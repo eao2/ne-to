@@ -9,7 +9,8 @@ module.exports = { apps: [
             NODE_ENV: 'production',
             DATABASE_URL: "mysql://admin:neto24@localhost:3306/neto",
             JWT_SECRET: "BC879C9583AD29F34FACC7970B36C1E58D8ABBC785025B3A197BB0A4655669C6",
-            BASE_URL: "https://ne-to.com"
+            BASE_URL: "https://ne-to.com",
+            RESEND_API: 're_HXfxfqn3_GPi66WBsMdpTYDZFhJnjVcCez'
         }
     }
     ]

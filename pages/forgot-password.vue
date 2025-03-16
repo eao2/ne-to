@@ -41,14 +41,14 @@
               </p>
             </div>
   
-            <button class="forgot-button" type="submit" @click="handleForgotPassword" :disabled="loading">
+            <button class="forgot-button" type="submit" :disabled="loading">
               {{ loading ? 'Илгээж байна...' : 'Нууц үг сэргээх линк авах' }}
             </button>
           </div>
           
           <div v-if="requestCompleted" class="forgot-success">
             <p>Нууц үг сэргээх линк амжилттай илгээгдлээ!</p>
-            <p>Та имэйл хаягаа шалгана уу.</p>
+            <p>Таны <strong>{{ maskedEmail }}</strong> имэйл хаяг руу илгээгдсэн линк дээр дарж нууц үгээ сэргээнэ үү.</p>
             <button class="forgot-button" @click="goToLogin">Нэвтрэх хуудас руу очих</button>
           </div>
         </div>
@@ -69,6 +69,7 @@
   const errorMessage = ref('')
   const requestCompleted = ref(false)
   const isPhoneValid = ref(true)
+  const maskedEmail = ref('')
   
   const form = ref({
     phoneNumber: '',
@@ -107,12 +108,14 @@
         }),
       })
   
+      const data = await response.json()
+  
       if (!response.ok) {
-        const error = await response.json()
-        errorMessage.value = error.message || 'Алдаа гарлаа'
+        errorMessage.value = data.message || 'Алдаа гарлаа'
         return
       }
   
+      maskedEmail.value = data.maskedEmail
       requestCompleted.value = true
     } catch (err) {
       console.error('Forgot password error:', err)

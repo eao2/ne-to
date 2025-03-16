@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
     const decoded = jwt.verify(token, JWT_SECRET);
 
     if (!decoded || !decoded.userId) {
-      return { statusCode: 401, body: { message: 'Invalid token' } };
+      return sendRedirect(event, '/login', 302);
     }
 
     // Fetch user information from the database
