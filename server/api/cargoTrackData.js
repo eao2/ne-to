@@ -41,8 +41,15 @@ export default defineEventHandler(async (event) => {
         currentStatus: true,
         createdAt: true,
         updatedAt: true,
+        destinationLocation: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
+
+    console.log('Fetched cargo tracking data:', cargoTrackings);
 
     // Return cargo tracking data (empty array if none found)
     return { statusCode: 200, body: cargoTrackings };

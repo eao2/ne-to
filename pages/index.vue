@@ -245,85 +245,95 @@
         </div>
 
         <div class="cargos">
-            <h3 class="total-price">Нийт: <span>{{numberWithCommas(totalPrice)}} ₮</span></h3>
-            <!-- New Filter Buttons Section -->
-            <h3 class="title">Төлөв:</h3>
-            <div class="filter-buttons">
-                <button 
-                    @click="activeFilter = null" 
-                    :class="activeFilter === null ? 'active-filter' : ''"
-                    class="filter-button"
-                >
-                    Бүгд
-                </button>
-                <button 
-                    @click="activeFilter = 'DELIVERED_TO_UB'" 
-                    :class="activeFilter === 'DELIVERED_TO_UB' ? 'active-filter' : ''"
-                    class="filter-button"
-                >
-                    Улаанбаатар-д ирсэн
-                </button>
-                <button 
-                    @click="activeFilter = 'IN_TRANSIT'" 
-                    :class="activeFilter === 'IN_TRANSIT' ? 'active-filter' : ''"
-                    class="filter-button"
-                >
-                    Эрээн-с гарсан
-                </button>
-                <button 
-                    @click="activeFilter = 'RECEIVED_AT_ERENHOT'" 
-                    :class="activeFilter === 'RECEIVED_AT_ERENHOT' ? 'active-filter' : ''"
-                    class="filter-button"
-                >
-                    Эрээн-д ирсэн
-                </button>
-                <button 
-                    @click="activeFilter = 'PRE_REGISTERED'" 
-                    :class="activeFilter === 'PRE_REGISTERED' ? 'active-filter' : ''"
-                    class="filter-button"
-                >
-                    Урьдчилан бүртгүүлсэн
-                </button>
-                <button 
-                    @click="activeFilter = 'DELIVERED'" 
-                    :class="activeFilter === 'DELIVERED' ? 'active-filter' : ''"
-                    class="filter-button"
-                >
-                    Бараа хүлээлгэн өгсөн
-                </button>
-            </div>
+    <h3 class="total-price">Нийт: <span>{{numberWithCommas(totalPrice)}} ₮</span></h3>
+    <!-- Filter Buttons Section -->
+    <h3 class="title">Төлөв:</h3>
+    <div class="filter-buttons">
+        <button 
+            @click="activeFilter = null" 
+            :class="activeFilter === null ? 'active-filter' : ''"
+            class="filter-button"
+        >
+            Бүгд
+        </button>
+        <button 
+            @click="activeFilter = 'DELIVERED_TO_UB'" 
+            :class="activeFilter === 'DELIVERED_TO_UB' ? 'active-filter' : ''"
+            class="filter-button"
+        >
+            Улаанбаатар-д ирсэн
+        </button>
+        <button 
+            @click="activeFilter = 'IN_TRANSIT'" 
+            :class="activeFilter === 'IN_TRANSIT' ? 'active-filter' : ''"
+            class="filter-button"
+        >
+            Эрээн-с гарсан
+        </button>
+        <button 
+            @click="activeFilter = 'RECEIVED_AT_ERENHOT'" 
+            :class="activeFilter === 'RECEIVED_AT_ERENHOT' ? 'active-filter' : ''"
+            class="filter-button"
+        >
+            Эрээн-д ирсэн
+        </button>
+        <button 
+            @click="activeFilter = 'PRE_REGISTERED'" 
+            :class="activeFilter === 'PRE_REGISTERED' ? 'active-filter' : ''"
+            class="filter-button"
+        >
+            Урьдчилан бүртгүүлсэн
+        </button>
+        <button 
+            @click="activeFilter = 'DELIVERED'" 
+            :class="activeFilter === 'DELIVERED' ? 'active-filter' : ''"
+            class="filter-button"
+        >
+            Бараа хүлээлгэн өгсөн
+        </button>
+    </div>
 
-            <div v-if="loading" class="loading-state">
-                <p>Loading...</p>
-            </div>
-            <div v-else-if="error" class="error-state">
-                {{ error }}
+    <!-- Loading State -->
+    <div v-if="loading" class="loading-state">
+        <p>Loading...</p>
+    </div>
+    
+    <!-- Error State -->
+    <div v-else-if="error" class="error-state">
+        <p>{{ error }}</p>
+    </div>
+    
+    <!-- Content State -->
+    <div v-else>
+        <h4 class="title">Тракууд</h4>
+        <!-- Empty State -->
+        <div v-if="!cargoTrackings || cargoTrackings.length === 0" class="empty-state">
+            <p>Бүртгэлтэй ачаа байхгүй байна.</p>
+        </div>
+        <!-- Filtered Results -->
+        <div v-else>
+            <div v-if="filteredAndSortedCargos.length === 0" class="empty-state">
+                <p>Шүүлтэд тохирох ачаа олдсонгүй.</p>
             </div>
             <div v-else>
-                <h4 class="title">Тракууд</h4>
-                <div v-if="cargoTrackings.length === 0" class="empty-state">
-                    <p>Бүртгэлтэй ачаа байхгүй байна.</p>
-                </div>
-                <div v-else>
-                    <div v-if="filteredAndSortedCargos.length === 0" class="empty-state">
-                        <p>Шүүлтэд тохирох ачаа олдсонгүй.</p>
-                    </div>
-                    <div v-else>
-                        <div v-for="cargo in filteredAndSortedCargos" :key="cargo.id" class="cargo-item">
-                            <a :href="`/track/${cargo.trackingNumber}`">
-                                <div class="cargo-lnk">
-                                    <div class="ttl">
-                                        <p class="id">{{ cargo.nickname ? cargo.nickname : cargo.trackingNumber }}</p>
-                                        <div class="stat" :class="cargo.currentStatus=='DELIVERED_TO_UB' && 'highlight'"> {{ currentStatus(cargo.currentStatus) }}</div>
-                                    </div>
-                                    <div class="price" v-if="cargo.currentStatus=='DELIVERED_TO_UB' && cargo.price"><p>Төлбөр:</p><p>{{ numberWithCommas(cargo.price) }}₮</p></div>
-                                </div>
-                            </a>
+                <div v-for="cargo in filteredAndSortedCargos" 
+                     :key="cargo.id" 
+                     class="cargo-item">
+                    <a :href="`/track/${cargo.trackingNumber}`">
+                        <div class="cargo-lnk">
+                            <div class="ttl">
+                                <p class="id">{{ cargo.nickname ? cargo.nickname : cargo.trackingNumber }}</p>
+                                <div class="stat" :class="cargo.currentStatus=='DELIVERED_TO_UB' && 'highlight'"> {{ currentStatus(cargo.currentStatus) }}</div>
+                            </div>
+                            <div class="destinationlocation" v-if="cargo.currentStatus=='DELIVERED_TO_UB' && cargo.destinationLocation"><p>Салбар:</p><p>{{ cargo.destinationLocation?.name }}</p></div>
+                            <div class="price" v-if="cargo.currentStatus=='DELIVERED_TO_UB' && cargo.price"><p>Төлбөр:</p><p>{{ numberWithCommas(cargo.price) }}₮</p></div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
+    </div>
+</div>
     </section>
 </template>
 
@@ -534,45 +544,38 @@ const fetchCargoTrackingData = async () => {
       },
     });
 
-    // Check for 401 Unauthorized specifically
-    if (response.status === 401) {
-      // Token is invalid, clear it
-      localStorage.removeItem('authToken');
-      token.value = '';
-      loggedIn.value = false;
-      router.push({path: "/login"});
-      throw new Error('Session expired. Please log in again.');
-    }
-
+    // Check if response is not OK
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.body?.message || 'Failed to fetch data');
     }
 
-    // If we got here, the token is valid
-    loggedIn.value = true;
+    // Parse the response data
     const data = await response.json();
     
-    // Ensure we always have an array, even if empty
+    // If we got here, the token is valid
+    loggedIn.value = true;
+    
+    // Ensure data.body is properly set
     cargoTrackings.value = Array.isArray(data.body) ? data.body : [];
     
-    // Reset totalPrice before recalculating
+    // Reset and calculate total price
     totalPrice.value = 0;
-    
-    if(cargoTrackings.value.length > 0){
-        for(const cargo of cargoTrackings.value){
-            if(cargo.price && cargo.currentStatus == 'DELIVERED_TO_UB'){
-                totalPrice.value = totalPrice.value + parseInt(cargo.price)
-            }
+    if (cargoTrackings.value.length > 0) {
+      cargoTrackings.value.forEach(cargo => {
+        if (cargo.price && cargo.currentStatus === 'DELIVERED_TO_UB') {
+          totalPrice.value += parseInt(cargo.price);
         }
+      });
     }
   } catch (err) {
+    console.error('Error fetching cargo data:', err);
+    error.value = err.message;
+    
     if (err.message.includes('Please log in') || err.message.includes('Session expired')) {
       cargoTrackings.value = [];
-      // Router push is now handled where the error occurs
-    } else {
-      error.value = err.message;
-      console.error('Error fetching cargo tracking data:', err);
+      loggedIn.value = false;
+      router.push('/login');
     }
   } finally {
     loading.value = false;
