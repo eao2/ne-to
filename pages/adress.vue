@@ -1,19 +1,14 @@
 <template>
   <div class="container">
-    <!-- Tab navigation for address locations -->
-    <div class="location-tabs">
-      <button 
-        :class="['tab-btn', { active: selectedLocation === 'sansar' }]"
-        @click="selectedLocation = 'sansar'"
-      >
-        Сансар
-      </button>
-      <button 
-        :class="['tab-btn', { active: selectedLocation === 'horoolol21' }]"
-        @click="selectedLocation = 'horoolol21'"
-      >
-        21-р хороолол
-      </button>
+    <!-- Location dropdown selector -->
+    <h3 class="location-title">Салбар:</h3>
+    <div class="location-select">
+      <select v-model="selectedLocation" class="location-dropdown">
+        <option value="sansar">Сансар</option>
+        <option value="horoolol21">21-р хороолол</option>
+        <option value="narnii-zam">Нарны Зам</option>
+        <option value="tengis">Тэнгис</option>
+      </select>
     </div>
 
     <!-- Sansar Address Sections -->
@@ -106,6 +101,116 @@
           <div class="copy-row">
             <span>M</span>
             <button @click="copyText('M')" class="copy-btn">Хуулах</button>
+          </div>
+          2-р Эгнээ : 手机号 (Утас)
+          <div class="copy-row">
+            <span>15734796400</span>
+            <button @click="copyText('15734796400')" class="copy-btn">Хуулах</button>
+          </div>
+          3-р Эгнээ : 地区 (Бүс нутаг)
+          <div class="copy-row">
+            <span>内蒙古自治区锡林郭勒盟二连浩特市</span>
+            <button @click="copyText('内蒙古自治区锡林郭勒盟二连浩特市')" class="copy-btn">Хуулах</button>
+          </div>
+          4-р Эгнээ : 详细地址 (Хаяг)
+          <div class="copy-row">
+            <span>内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号{{ isLoggedIn ? ` (${user.name}, ${user.phoneNumber})` : '(Нэр, Утасны дугаар)' }}</span>
+            <button @click="copyText(`内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号${isLoggedIn ? ` (${user.name}, ${user.phoneNumber})` : '(Нэр, Утасны дугаар)'}`)" class="copy-btn">Хуулах</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- НАРНЫ ЗАМ Address Sections -->
+    <div v-if="selectedLocation === 'narnii-zam'" class="address-sections">
+      <div class="address-section">
+        <h3>ЭНГИЙН ТЭЭВЭР</h3>
+        <div class="copy-rows">
+          1-р Эгнээ : 收件人 (Хүлээн авагч)
+          <div class="copy-row">
+            <span>X</span>
+            <button @click="copyText('X')" class="copy-btn">Хуулах</button>
+          </div>
+          2-р Эгнээ : 手机号 (Утас)
+          <div class="copy-row">
+            <span>15734796400</span>
+            <button @click="copyText('15734796400')" class="copy-btn">Хуулах</button>
+          </div>
+          3-р Эгнээ : 地区 (Бүс нутаг)
+          <div class="copy-row">
+            <span>内蒙古自治区锡林郭勒盟二连浩特市</span>
+            <button @click="copyText('内蒙古自治区锡林郭勒盟二连浩特市')" class="copy-btn">Хуулах</button>
+          </div>
+          4-р Эгнээ : 详细地址 (Хаяг)
+          <div class="copy-row">
+            <span>内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号{{ isLoggedIn ? ` (${user.name}, ${user.phoneNumber})` : '(Нэр, Утасны дугаар)' }}</span>
+            <button @click="copyText(`内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号${isLoggedIn ? ` (${user.name}, ${user.phoneNumber})` : '(Нэр, Утасны дугаар)'}`)" class="copy-btn">Хуулах</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="address-section">
+        <h3>ШУУРХАЙ ТЭЭВЭР</h3>
+        <div class="copy-rows">
+          1-р Эгнээ : 收件人 (Хүлээн авагч)
+          <div class="copy-row">
+            <span>Н</span>
+            <button @click="copyText('Н')" class="copy-btn">Хуулах</button>
+          </div>
+          2-р Эгнээ : 手机号 (Утас)
+          <div class="copy-row">
+            <span>15734796400</span>
+            <button @click="copyText('15734796400')" class="copy-btn">Хуулах</button>
+          </div>
+          3-р Эгнээ : 地区 (Бүс нутаг)
+          <div class="copy-row">
+            <span>内蒙古自治区锡林郭勒盟二连浩特市</span>
+            <button @click="copyText('内蒙古自治区锡林郭勒盟二连浩特市')" class="copy-btn">Хуулах</button>
+          </div>
+          4-р Эгнээ : 详细地址 (Хаяг)
+          <div class="copy-row">
+            <span>内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号{{ isLoggedIn ? ` (${user.name}, ${user.phoneNumber})` : '(Нэр, Утасны дугаар)' }}</span>
+            <button @click="copyText(`内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号${isLoggedIn ? ` (${user.name}, ${user.phoneNumber})` : '(Нэр, Утасны дугаар)'}`)" class="copy-btn">Хуулах</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <!-- ТЭНГИС Address Sections -->
+    <div v-if="selectedLocation === 'tengis'" class="address-sections">
+      <div class="address-section">
+        <h3>ЭНГИЙН ТЭЭВЭР</h3>
+        <div class="copy-rows">
+          1-р Эгнээ : 收件人 (Хүлээн авагч)
+          <div class="copy-row">
+            <span>Е</span>
+            <button @click="copyText('Е')" class="copy-btn">Хуулах</button>
+          </div>
+          2-р Эгнээ : 手机号 (Утас)
+          <div class="copy-row">
+            <span>15734796400</span>
+            <button @click="copyText('15734796400')" class="copy-btn">Хуулах</button>
+          </div>
+          3-р Эгнээ : 地区 (Бүс нутаг)
+          <div class="copy-row">
+            <span>内蒙古自治区锡林郭勒盟二连浩特市</span>
+            <button @click="copyText('内蒙古自治区锡林郭勒盟二连浩特市')" class="copy-btn">Хуулах</button>
+          </div>
+          4-р Эгнээ : 详细地址 (Хаяг)
+          <div class="copy-row">
+            <span>内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号{{ isLoggedIn ? ` (${user.name}, ${user.phoneNumber})` : '(Нэр, Утасны дугаар)' }}</span>
+            <button @click="copyText(`内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号${isLoggedIn ? ` (${user.name}, ${user.phoneNumber})` : '(Нэр, Утасны дугаар)'}`)" class="copy-btn">Хуулах</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="address-section">
+        <h3>ШУУРХАЙ ТЭЭВЭР</h3>
+        <div class="copy-rows">
+          1-р Эгнээ : 收件人 (Хүлээн авагч)
+          <div class="copy-row">
+            <span>Т</span>
+            <button @click="copyText('Т')" class="copy-btn">Хуулах</button>
           </div>
           2-р Эгнээ : 手机号 (Утас)
           <div class="copy-row">
@@ -234,25 +339,31 @@ onMounted(async () => {
   margin: 0 auto;
 }
 
-/* Location tabs styling */
-.location-tabs {
+.location-title{
+  margin-bottom: 8px;
+  color: #2c3e50;
+}
+
+.location-select {
   display: flex;
   justify-content: center;
-  gap: 1rem;
   margin-bottom: 1rem;
 }
 
-.tab-btn {
-  padding: 0.75rem 1.5rem;
+.location-dropdown {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.75rem;
   border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
   background: white;
+  font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s;
-  font-weight: 500;
-
-  &.active {
-    background: #0066ff;
-    color: white;
+  outline: none;
+  
+  &:focus {
+    border-color: #0066ff;
+    box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.1);
   }
 }
 

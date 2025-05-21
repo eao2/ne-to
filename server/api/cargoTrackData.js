@@ -49,7 +49,7 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-    console.log('Fetched cargo tracking data:', cargoTrackings);
+    // console.log('Fetched cargo tracking data:', cargoTrackings);
 
     // Return cargo tracking data (empty array if none found)
     return { statusCode: 200, body: cargoTrackings };
