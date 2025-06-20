@@ -3,16 +3,32 @@
     <!-- Location dropdown selector -->
     <h3 class="location-title">Салбар:</h3>
     <div class="location-select">
-      <select v-model="selectedLocation" class="location-dropdown">
-        <option value="sansar">Сансар</option>
-        <option value="horoolol21">21-р хороолол</option>
-        <option value="narnii-zam">Нарны Зам</option>
-        <option value="tengis">Тэнгис</option>
-      </select>
+      <Listbox v-model="selectedLocation">
+        <div class="listbox-wrapper">
+          <ListboxButton class="listbox-btn">
+            {{ selectedLocation?.name || 'Салбараа сонгоно уу' }}
+          </ListboxButton>
+          <ListboxOptions class="listbox-options">
+            <ListboxOption
+              v-for="loc in locations"
+              :key="loc.id ?? 'null'"
+              :value="loc"
+              as="template"
+            >
+              <li
+                class="listbox-option"
+                :class="{ 'selected': selectedLocation && selectedLocation.id === loc.id }"
+              >
+                {{ loc.name }}
+              </li>
+            </ListboxOption>
+          </ListboxOptions>
+        </div>
+      </Listbox>
     </div>
 
-    <!-- Sansar Address Sections -->
-    <div v-if="selectedLocation === 'sansar'" class="address-sections">
+    <!-- Address Sections -->
+    <div v-if="selectedLocation && selectedLocation.id === 'sansar'" class="address-sections">
       <div class="address-section">
         <h3>ЭНГИЙН ТЭЭВЭР</h3>
         <div class="copy-rows">
@@ -66,8 +82,7 @@
       </div>
     </div>
 
-    <!-- 21-р хороолол Address Sections -->
-    <div v-if="selectedLocation === 'horoolol21'" class="address-sections">
+    <div v-if="selectedLocation && selectedLocation.id === 'horoolol21'" class="address-sections">
       <div class="address-section">
         <h3>ЭНГИЙН ТЭЭВЭР</h3>
         <div class="copy-rows">
@@ -121,8 +136,7 @@
       </div>
     </div>
 
-    <!-- НАРНЫ ЗАМ Address Sections -->
-    <div v-if="selectedLocation === 'narnii-zam'" class="address-sections">
+    <div v-if="selectedLocation && selectedLocation.id === 'narnii-zam'" class="address-sections">
       <div class="address-section">
         <h3>ЭНГИЙН ТЭЭВЭР</h3>
         <div class="copy-rows">
@@ -176,15 +190,14 @@
       </div>
     </div>
 
-        <!-- ТЭНГИС Address Sections -->
-    <div v-if="selectedLocation === 'tengis'" class="address-sections">
+    <div v-if="selectedLocation && selectedLocation.id === '19uilchilgee'" class="address-sections">
       <div class="address-section">
         <h3>ЭНГИЙН ТЭЭВЭР</h3>
         <div class="copy-rows">
           1-р Эгнээ : 收件人 (Хүлээн авагч)
           <div class="copy-row">
-            <span>Е</span>
-            <button @click="copyText('Е')" class="copy-btn">Хуулах</button>
+            <span>巴</span>
+            <button @click="copyText('巴')" class="copy-btn">Хуулах</button>
           </div>
           2-р Эгнээ : 手机号 (Утас)
           <div class="copy-row">
@@ -209,8 +222,62 @@
         <div class="copy-rows">
           1-р Эгнээ : 收件人 (Хүлээн авагч)
           <div class="copy-row">
-            <span>Т</span>
-            <button @click="copyText('Т')" class="copy-btn">Хуулах</button>
+            <span>B</span>
+            <button @click="copyText('B')" class="copy-btn">Хуулах</button>
+          </div>
+          2-р Эгнээ : 手机号 (Утас)
+          <div class="copy-row">
+            <span>15734796400</span>
+            <button @click="copyText('15734796400')" class="copy-btn">Хуулах</button>
+          </div>
+          3-р Эгнээ : 地区 (Бүс нутаг)
+          <div class="copy-row">
+            <span>内蒙古自治区锡林郭勒盟二连浩特市</span>
+            <button @click="copyText('内蒙古自治区锡林郭勒盟二连浩特市')" class="copy-btn">Хуулах</button>
+          </div>
+          4-р Эгнээ : 详细地址 (Хаяг)
+          <div class="copy-row">
+            <span>内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号{{ isLoggedIn ? ` (${user.name}, ${user.phoneNumber})` : '(Нэр, Утасны дугаар)' }}</span>
+            <button @click="copyText(`内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号${isLoggedIn ? ` (${user.name}, ${user.phoneNumber})` : '(Нэр, Утасны дугаар)'}`)" class="copy-btn">Хуулах</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="selectedLocation && selectedLocation.id === 'horoolol3,4gemtel'" class="address-sections">
+      <div class="address-section">
+        <h3>ЭНГИЙН ТЭЭВЭР</h3>
+        <div class="copy-rows">
+          1-р Эгнээ : 收件人 (Хүлээн авагч)
+          <div class="copy-row">
+            <span>风</span>
+            <button @click="copyText('风')" class="copy-btn">Хуулах</button>
+          </div>
+          2-р Эгнээ : 手机号 (Утас)
+          <div class="copy-row">
+            <span>15734796400</span>
+            <button @click="copyText('15734796400')" class="copy-btn">Хуулах</button>
+          </div>
+          3-р Эгнээ : 地区 (Бүс нутаг)
+          <div class="copy-row">
+            <span>内蒙古自治区锡林郭勒盟二连浩特市</span>
+            <button @click="copyText('内蒙古自治区锡林郭勒盟二连浩特市')" class="copy-btn">Хуулах</button>
+          </div>
+          4-р Эгнээ : 详细地址 (Хаяг)
+          <div class="copy-row">
+            <span>内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号{{ isLoggedIn ? ` (${user.name}, ${user.phoneNumber})` : '(Нэр, Утасны дугаар)' }}</span>
+            <button @click="copyText(`内蒙古锡林郭勒盟二连浩特市环宇商贸城，11楼4号${isLoggedIn ? ` (${user.name}, ${user.phoneNumber})` : '(Нэр, Утасны дугаар)'}`)" class="copy-btn">Хуулах</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="address-section">
+        <h3>ШУУРХАЙ ТЭЭВЭР</h3>
+        <div class="copy-rows">
+          1-р Эгнээ : 收件人 (Хүлээн авагч)
+          <div class="copy-row">
+            <span>J</span>
+            <button @click="copyText('J')" class="copy-btn">Хуулах</button>
           </div>
           2-р Эгнээ : 手机号 (Утас)
           <div class="copy-row">
@@ -268,7 +335,7 @@
       :pagination="{ clickable: true }"
       class="image-swiper"
     >
-      <swiper-slide class="swiper-slide" v-for="i in 10" :key="`taobao-${i}`">
+      <swiper-slide class="swiper-slide" v-for="i in 17" :key="`taobao-${i}`">
         <img :src="`/cargoAdress/taobao/${i}.jpg`" alt="" loading="lazy">
       </swiper-slide>
     </swiper>
@@ -277,18 +344,28 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation, Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
+const locations = [
+  { id: null, name: 'Салбар сонгох' },
+  { id: 'sansar', name: 'Сансар' },
+  { id: 'horoolol21', name: '21-р хороолол' },
+  { id: 'narnii-zam', name: 'Нарны Зам' },
+  { id: '19uilchilgee', name: '19 үйлчилгээний төв' },
+  { id: 'horoolol3,4gemtel', name: '3,4-р хороолол гэмтэл' },
+]
+
 const user = ref({
   "name": '',
   "phoneNumber": ''
 })
 const selectedPlatform = ref('pinduoduo')
-const selectedLocation = ref('sansar') // Default to Sansar location
+const selectedLocation = ref(locations[0])
 const isLoggedIn = ref(false)
 
 const copyText = async (text) => {
@@ -467,5 +544,54 @@ onMounted(async () => {
   :deep(.swiper-pagination) {
     bottom: 1rem !important;
   }
+}
+
+.listbox-wrapper {
+  position: relative;
+  margin-top: 0.25rem;
+  width: 100%;
+}
+
+.listbox-btn {
+  width: 100%;
+  cursor: pointer;
+  border-radius: 1rem;
+  background: #fff;
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  text-align: left;
+  border: 1px solid #e2e8f0;
+  font-size: 1rem;
+  position: relative;
+  min-height: 3rem;
+}
+
+.listbox-options {
+  position: absolute;
+  z-index: 100;
+  margin-top: 0.25rem;
+  width: 100%;
+  overflow-y: auto;
+  border-radius: 1rem;
+  background: #fff;
+  font-size: 1rem;
+  border: 1px solid #e2e8f0;
+}
+
+.listbox-option {
+  cursor: pointer;
+  user-select: none;
+  padding: 0.75rem 1rem;
+  transition: background 0.2s;
+  border: none;
+  background: transparent;
+
+  &:hover, &[aria-selected="true"] {
+    background: #f5f5f5;
+  }
+}
+
+.listbox-option.selected {
+  background: #e6f0ff;
+  font-weight: 600;
 }
 </style>
