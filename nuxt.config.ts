@@ -1,16 +1,36 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import { defineNuxtConfig } from 'nuxt/config'
+import { fileURLToPath } from 'node:url'
+
 export default defineNuxtConfig({
+  vite: {
+    resolve: {
+      alias: {
+        '#prisma': fileURLToPath(new URL('./generated/prisma/index.js', import.meta.url))
+      }
+    }
+  },
+  nitro: {
+    experimental: {
+      wasm: true
+    },
+    externals: {
+      external: ['@prisma/client', '.prisma/client']
+    }
+  },
+  alias: {
+    '#prisma': fileURLToPath(new URL('./generated/prisma/index.js', import.meta.url))
+  },
+  devServer: {
+    port: 3000,
+    host: '0.0.0.0',
+  },
+  compatibilityDate: '2024-11-01',
   modules: [
     'vue-sonner/nuxt'
   ],
   vueSonner: {
     css: true 
   },
-  devServer: {
-    port: 3000,
-    host: '0.0.0.0',
-  },
-  compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   css: ['@/assets/styles/global.scss'],
   app: {
