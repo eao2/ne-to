@@ -3,6 +3,12 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   css: ['@/assets/styles/global.scss'],
+  modules: [
+    'vue-sonner/nuxt'
+  ],
+  vueSonner: {
+    css: true 
+  },
   app: {
     head: {
       title: 'NE-TO cargo',
