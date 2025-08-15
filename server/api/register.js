@@ -1,5 +1,5 @@
 // server/api/register.js
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '#prisma'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 

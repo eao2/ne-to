@@ -1,7 +1,8 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '#prisma'
 import jwt from 'jsonwebtoken'
 
 const prisma = new PrismaClient()
+
 const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key"
 
 export default defineEventHandler(async (event) => {

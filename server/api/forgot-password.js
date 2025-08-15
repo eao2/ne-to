@@ -1,8 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '#prisma';
 import jwt from 'jsonwebtoken';
 import { Resend } from 'resend';
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key";
 const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
 const RESEND_API_KEY = process.env.RESEND_API;

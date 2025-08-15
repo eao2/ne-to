@@ -15,11 +15,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const query = getQuery(event)
-    const trackingNumber = (query.trackingNumber || '').toString().trim()
-
-    if (!trackingNumber) {
-      return { statusCode: 400, body: { message: 'trackingNumber is required' } }
-    }
+    const id = (query.id || '').trim()
 
     const decoded = jwt.verify(token, JWT_SECRET)
     if (!decoded || !decoded.userId) {
@@ -28,17 +24,13 @@ export default defineEventHandler(async (event) => {
 
     await prisma.$connect()
 
-    const cargo = await prisma.cargoTracking.findFirst({
+    const cargo = await prisma.cargoTracking.delete({
       where: {
-        trackingNumber,
+        id,
         userId: decoded.userId,
-      },
-      include: {
-        destinationLocation: true,
-        originLocation: true,
-        deliveryRequests: true,
-      },
+      }
     })
+    console.log('Cargo deleted:', cargo)
 
     if (!cargo) {
       return { statusCode: 404, body: { message: 'Cargo not found' } }
@@ -46,8 +38,8 @@ export default defineEventHandler(async (event) => {
 
     return { success: true, data: cargo }
   } catch (error) {
-    console.error('Error fetching cargo detail:', error)
-    return { statusCode: 500, message: 'Failed to fetch cargo detail', error: error.message }
+    console.error('Error deleting cargo:', error)
+    return { statusCode: 500, message: 'Ачаа устгаж чадсангүй', error: error.message }
   } finally {
     await prisma.$disconnect()
   }
