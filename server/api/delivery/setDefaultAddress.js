@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client'
+// import { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken';
 
-const prisma = new PrismaClient()
+// const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
   const JWT_SECRET = process.env.JWT_SECRET || '0';
@@ -24,9 +24,7 @@ export default defineEventHandler(async (event) => {
     if (!body.addressId) {
       return { statusCode: 400, message: 'Address ID is required' };
     }
-
-    await prisma.$connect();
-
+    
     // Verify address belongs to user
     const address = await prisma.deliveryAddress.findFirst({
       where: {
@@ -53,7 +51,5 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
     console.error('Error setting default address:', error);
     return { success: false, message: 'Failed to set default address' };
-  } finally {
-    await prisma.$disconnect();
   }
 });

@@ -1,7 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+// import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 
-const prisma = new PrismaClient()
+// const prisma = new PrismaClient()
+
+import prisma from '../utils/prisma.js'
 
 export default defineEventHandler(async (event) => {
   const JWT_SECRET = process.env.JWT_SECRET || '0';
@@ -52,8 +54,5 @@ export default defineEventHandler(async (event) => {
 
     // Return a 401 Unauthorized error
     return { statusCode: 401, body: { message: 'Unauthorized access' } };
-  } finally {
-    // Close the Prisma connection
-    await prisma.$disconnect();
   }
 });

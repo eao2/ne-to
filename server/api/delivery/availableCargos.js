@@ -1,7 +1,9 @@
-import { PrismaClient } from '@prisma/client'
+// import { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken';
 
-const prisma = new PrismaClient()
+// const prisma = new PrismaClient()
+
+import prisma from '../../utils/prisma.js'
 
 export default defineEventHandler(async (event) => {
     const JWT_SECRET = process.env.JWT_SECRET || '0';
@@ -19,8 +21,6 @@ export default defineEventHandler(async (event) => {
         if (!decoded?.userId) {
             return { statusCode: 401, message: 'Invalid token' };
         }
-
-        await prisma.$connect()
 
         const cargos = await prisma.cargoTracking.findMany({
             where: {
@@ -65,7 +65,5 @@ export default defineEventHandler(async (event) => {
             message: 'Failed to fetch available cargos',
             error: error.message 
         }
-    } finally {
-        await prisma.$disconnect()
     }
 })

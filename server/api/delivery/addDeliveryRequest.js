@@ -1,7 +1,9 @@
-import { PrismaClient } from '@prisma/client'
+// import { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken';
 
-const prisma = new PrismaClient()
+// const prisma = new PrismaClient()
+
+import prisma from '../../utils/prisma.js'
 
 export default defineEventHandler(async (event) => {
     const JWT_SECRET = process.env.JWT_SECRET || '0';
@@ -24,8 +26,6 @@ export default defineEventHandler(async (event) => {
         if (!body.cargoIds?.length || !body.deliveryAddressId) {
             return { statusCode: 400, message: 'Missing required fields' };
         }
-
-        await prisma.$connect()
 
         // Create delivery requests for each cargo
         const deliveryRequests = await Promise.all(body.cargoIds.map(cargoId => 
@@ -52,7 +52,5 @@ export default defineEventHandler(async (event) => {
             message: 'Failed to create delivery request',
             error: error.message 
         }
-    } finally {
-        await prisma.$disconnect()
     }
 })

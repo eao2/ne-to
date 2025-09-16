@@ -1,7 +1,9 @@
-import { PrismaClient } from '@prisma/client'
+// import { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken';
 
-const prisma = new PrismaClient()
+// const prisma = new PrismaClient()
+
+import prisma from '../../utils/prisma.js'
 
 export default defineEventHandler(async (event) => {
   const JWT_SECRET = process.env.JWT_SECRET || '0';
@@ -20,8 +22,6 @@ export default defineEventHandler(async (event) => {
     if (!decoded?.userId) {
       return { statusCode: 401, message: 'Invalid token' };
     }
-
-    await prisma.$connect();
 
     const newAddress = await prisma.deliveryAddress.create({
       data: {
@@ -57,7 +57,5 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
     console.error('Error adding address:', error);
     return { success: false, message: 'Failed to add address' };
-  } finally {
-    await prisma.$disconnect();
   }
 });

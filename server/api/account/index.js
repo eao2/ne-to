@@ -1,7 +1,9 @@
-import { PrismaClient } from '@prisma/client'
+// import { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 
-const prisma = new PrismaClient()
+// const prisma = new PrismaClient()
+
+import prisma from '../../utils/prisma.js'
 
 // Add validation helpers
 const isValidEmail = (email) => {
@@ -29,8 +31,6 @@ export default defineEventHandler(async (event) => {
         if (!decoded?.userId) {
             return { statusCode: 401, message: 'Invalid token' }
         }
-
-        await prisma.$connect()
 
         if (event.method === 'GET') {
             const user = await prisma.user.findUnique({
@@ -134,7 +134,5 @@ export default defineEventHandler(async (event) => {
     } catch (error) {
         console.error('Account API error:', error)
         return { statusCode: 500, message: 'Internal server error' }
-    } finally {
-        await prisma.$disconnect()
     }
 })

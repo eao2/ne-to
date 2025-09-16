@@ -1,7 +1,9 @@
-import { PrismaClient } from '@prisma/client'
+// import { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken';
 
-const prisma = new PrismaClient()
+// const prisma = new PrismaClient()
+
+import prisma from '../../utils/prisma.js'
 
 const STATUS_PRIORITY = {
   'DELIVERED_TO_UB': 4,
@@ -26,8 +28,6 @@ export default defineEventHandler(async (event) => {
     if (!decoded || !decoded.userId) {
       return { success: true, data: null, user: false };
     }
-
-    await prisma.$connect()
 
     const cargos = await prisma.cargoTracking.groupBy({
       by: ['currentStatus'],
@@ -69,7 +69,5 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
     console.error("Error fetching cargo concise info:", error);
     return { success: true, data: null, user: false };
-  } finally {
-    await prisma.$disconnect();
   }
 });

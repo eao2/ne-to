@@ -1,6 +1,8 @@
-import { PrismaClient } from '@prisma/client'
+// import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
+// const prisma = new PrismaClient()
+
+import prisma from '../../utils/prisma.js'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -13,8 +15,6 @@ export default defineEventHandler(async (event) => {
         message: "Tracking number is required." 
       })
     }
-
-    await prisma.$connect()
 
     const cargo = await prisma.cargoTracking.findUnique({
       where: { trackingNumber },
@@ -38,7 +38,5 @@ export default defineEventHandler(async (event) => {
       statusCode: 404, 
       message: "Трак код олдсонгүй."
     })
-  } finally {
-    await prisma.$disconnect()
   }
 })
