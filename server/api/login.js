@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 // const prisma = new PrismaClient()
 
-import prisma from '../../utils/prisma.js'
+import prisma from '../utils/prisma.js'
 
 export const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key";
 
@@ -36,3 +36,4 @@ export default defineEventHandler(async (event) => {
 
   return { token, user };
 });
+
