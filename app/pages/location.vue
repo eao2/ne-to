@@ -142,7 +142,7 @@ const selectedBranch = ref(null);
 let map = null;
 
 const config = useRuntimeConfig();
-const GOOGLE_MAPS_API_KEY = config.public.googleMapsKey;
+const GOOGLE_MAPS_API_KEY = process.env.NUXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 const MAP_ID = "c39c2bafafb406ca48d41de9";
 
 // Branch locations
