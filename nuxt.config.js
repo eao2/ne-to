@@ -1,13 +1,22 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
+  devtools: { enabled: true },  
+  devServer: {
+    host: '0.0.0.0',
+    port: 3000,
+  },
   css: ['@/assets/styles/global.scss'],
   modules: [
     'vue-sonner/nuxt'
   ],
   vueSonner: {
     css: true 
+  },
+  runtimeConfig: {
+    public: {
+      googleMapsKey: process.env.NUXT_PUBLIC_GOOGLE_MAPS_API_KEY
+    }
   },
   app: {
     head: {
