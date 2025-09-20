@@ -179,7 +179,7 @@ const branches = [
         lat: 47.911483, 
         lng: 106.886885, 
         hours: "10:00-17:00", 
-        days: "Даваа-Баасан", 
+        days: "Даваа-Бямба", 
         location: 'БГД-ын 1-хоpoo Khabu Hotel -н хойно 48-р байрны баруун урд талд', 
         image: "https://placehold.co/200x200/4299e1/ffffff?text=Төмөр зам" 
     },
@@ -189,8 +189,8 @@ const branches = [
         phoneNumber: "94505479",
         lat: 47.9017538, 
         lng: 106.9004209, 
-        hours: "10:00-18:00", 
-        days: "Даваа-Баасан", 
+        hours: "09:30-16:30, Бямба: 11:00–17:00", 
+        days: "Даваа-Бямба", 
         location: 'Хан-уул дүүрэг 2-р хороо 9-р байр 1 тоот', 
         image: "https://placehold.co/200x200/4299e1/ffffff?text=19 үйлчилгээний төв" 
     },
@@ -201,7 +201,7 @@ const branches = [
         lat: 47.9207139, 
         lng: 106.8593221, 
         hours: "15:00-21:20", 
-        days: "Даваа-Баасан", 
+        days: "Даваа-Бямба", 
         location: 'БГД-31 хороо 65-р байр', 
         image: "https://placehold.co/200x200/4299e1/ffffff?text=3,4-р хороолол гэмтэл" 
     },
