@@ -164,39 +164,39 @@ const calculatePrice = () => {
 }
 
 const calculateNormalDelivery = (volume, weight) => {
-  let priceByVolume = volume * 325000
+  let priceByVolume = volume * 433500
   let priceByWeight = 0
 
   // Weight based calculation
   if (weight <= 0.1) {
     priceByWeight = 2000
   } else if (weight <= 1) {
-    priceByWeight = 2500
+    priceByWeight = 3000
   } else {
-    priceByWeight = weight * 2500
+    priceByWeight = weight * 3000
   }
 
   // Use the higher price
   calculatedPrice.value = Math.max(priceByVolume, priceByWeight)
   calculationMethod.value = priceByVolume > priceByWeight ? 
-    'Эзлэхүүнээр тооцсон (325,000₮/м³)' : 'Жингээр нь тооцсон (2,500₮/кг)'
+    'Эзлэхүүнээр тооцсон (850¥/м³)' : 'Жингээр нь тооцсон (2,500₮/кг)'
 }
 
 const calculateQuickDelivery = (volume, weight) => {
-  let priceByVolume = volume * 500000
+  let priceByVolume = volume * 634000
   let priceByWeight = 0
 
   if (weight <= 0.1) {
     priceByWeight = 2000
   } else if (weight <= 1) {
-    priceByWeight = 2500
+    priceByWeight = 3800
   } else {
-    priceByWeight = weight * 3500
+    priceByWeight = weight * 3800
   }
 
   calculatedPrice.value = Math.max(priceByVolume, priceByWeight)
   calculationMethod.value = calculatedPrice.value === priceByVolume ? 
-    'Эзлэхүүнээр тооцсон (500,000₮/м³)' : 'Жингээр нь тооцсон (3,500₮/кг)'
+    'Эзлэхүүнээр тооцсон (1,250¥/м³)' : 'Жингээр нь тооцсон (3,500₮/кг)'
 }
 
 onMounted(() => {
