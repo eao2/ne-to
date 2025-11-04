@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      googleMapsKey: process.env.NUXT_PUBLIC_GOOGLE_MAPS_API_KEY
+      googleMapsKey: AIzaSyDuDxwGbnDQYjDsSOe9q8UbOnTsPKXuFTg
     }
   },
   app: {
