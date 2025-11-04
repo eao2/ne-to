@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      googleMapsKey: AIzaSyDuDxwGbnDQYjDsSOe9q8UbOnTsPKXuFTg
+      googleMapsKey: 'AIzaSyDuDxwGbnDQYjDsSOe9q8UbOnTsPKXuFTg'
     }
   },
   app: {
