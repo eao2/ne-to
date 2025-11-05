@@ -38,7 +38,7 @@
       <h3>Тээвэрлэлтийн түүх</h3>
       <ul>
         <li v-for="(event, index) in trackingData.history" :key="index">
-          <div class="status">
+          <div class="status">r
             <span class="dot" :class="{ active: index === 0 }"></span>
             <div class="details">
               <p class="status-text">{{ event.status }}</p>

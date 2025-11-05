@@ -178,6 +178,9 @@
                             <img src="/svg/bar-code.svg" alt="bar-code-icon">
                             {{cargoInfo.trackingNumber}}
                         </div>
+                        <div v-if="currentStatusDate(cargoInfo)" class="statusDate">
+                            {{ formatDateTime(currentStatusDate(cargoInfo)) }}
+                        </div>
                     </div>
                     <div class="priceSection">
                         <div v-if="cargoInfo.price" class="price">
@@ -295,6 +298,33 @@ const handleCargoTrackCheck = async () => {
         }
     } catch (error) {
         toast.error(error.message || 'Трак код олдсонгүй')
+    }
+}
+
+const currentStatusDate = (cargo) => {
+    if (!cargo) return null
+    const map = {
+        'PRE_REGISTERED': cargo.preRegisteredDate,
+        'RECEIVED_AT_ERENHOT': cargo.receivedAtErenhotDate,
+        'IN_TRANSIT': cargo.inTransitDate,
+        'DELIVERED_TO_UB': cargo.deliveredToUBDate,
+        'DELIVERED': cargo.deliveredDate,
+    }
+    return map[cargo.currentStatus] || null
+}
+
+const formatDateTime = (value) => {
+    try {
+        const d = new Date(value)
+        if (Number.isNaN(d.getTime())) return ''
+        const yyyy = d.getFullYear()
+        const mm = String(d.getMonth() + 1).padStart(2, '0')
+        const dd = String(d.getDate()).padStart(2, '0')
+        const hh = String(d.getHours()).padStart(2, '0')
+        const mi = String(d.getMinutes()).padStart(2, '0')
+        return `${yyyy}-${mm}-${dd} ${hh}:${mi}`
+    } catch {
+        return ''
     }
 }
 
@@ -745,6 +775,10 @@ section {
                         white-space: normal;
                         word-break: break-word;
                         overflow-wrap: anywhere;
+                    }
+                    .statusDate{
+                        font-size: 12px;
+                        color: #6B7280;
                     }
                 }
                 .priceSection{
