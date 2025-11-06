@@ -5,8 +5,8 @@
 
     <div class="calculator-form">
       <h3>Ачаа тээврийн үнэ тооцоолох</h3>
-      
-      <div class="delivery-type">  
+
+      <div class="delivery-type">
         <div class="price-result">
           <div class="result-card">
             <h4>Тооцоолсон үнэ</h4>
@@ -20,14 +20,12 @@
         </div>
         <label>Тээвэрлэлтийн төрөл</label>
         <div class="radio-group">
-          <div class="radio-option" 
-               :class="{ active: form.deliveryType === 'normal' }"
-               @click="selectDeliveryType('normal')">
+          <div class="radio-option" :class="{ active: form.deliveryType === 'normal' }"
+            @click="selectDeliveryType('normal')">
             Энгийн тээвэр
           </div>
-          <div class="radio-option" 
-               :class="{ active: form.deliveryType === 'quick' }"
-               @click="selectDeliveryType('quick')">
+          <div class="radio-option" :class="{ active: form.deliveryType === 'quick' }"
+            @click="selectDeliveryType('quick')">
             Шуурхай тээвэр
           </div>
         </div>
@@ -36,48 +34,23 @@
       <div class="dimensions">
         <div class="input-group">
           <label>Урт (см)</label>
-          <input
-            type="number"
-            v-model="form.length"
-            placeholder="0"
-            min="0"
-            @input="validateAndCalculate"
-          />
+          <input type="number" v-model="form.length" placeholder="0" min="0" @input="validateAndCalculate" />
         </div>
 
         <div class="input-group">
           <label>Өргөн (см)</label>
-          <input
-            type="number"
-            v-model="form.width"
-            placeholder="0"
-            min="0"
-            @input="validateAndCalculate"
-          />
+          <input type="number" v-model="form.width" placeholder="0" min="0" @input="validateAndCalculate" />
         </div>
 
         <div class="input-group">
           <label>Өндөр (см)</label>
-          <input
-            type="number"
-            v-model="form.height"
-            placeholder="0"
-            min="0"
-            @input="validateAndCalculate"
-          />
+          <input type="number" v-model="form.height" placeholder="0" min="0" @input="validateAndCalculate" />
         </div>
       </div>
-        <div class="input-group">
-          <label>Жин (кг)</label>
-          <input
-            type="number"
-            v-model="form.weight"
-            step="0.1"
-            placeholder="0"
-            min="0"
-            @input="validateAndCalculate"
-          />
-        </div>
+      <div class="input-group">
+        <label>Жин (кг)</label>
+        <input type="number" v-model="form.weight" step="0.1" placeholder="0" min="0" @input="validateAndCalculate" />
+      </div>
 
       <button class="calculate-button" @click="calculatePrice">
         Үнэ тооцоолох
@@ -87,37 +60,29 @@
         {{ errorMessage }}
       </div>
       <div class="info">
-          1. ЭНГИЙН ТЭЭВЭР <br> <br>
-          
-          0-100 гр = 2000₮<br>
-          100гр-1кг = 3000₮<br>
-          1кг-с дээш = 3000₮/кг<br>
-          Гутлын хайрцаг = 6000-8000₮<br> <br>
-          
-          Овроор: <br>
-          1м³ = 850¥<br> <br>
-          
-          Кг-р: <br>
-          1кг = 3000₮ <br> <br>
-          
-          2. ШУУРХАЙ ТЭЭВЭР <br> <br>
-          
-          <ul>
-            <li>Case,Ээмэг бөгж, жижиг хэрэгсэл: 2000₮</li>
-            <li>Подволк,Цамц,Өмд: 3800₮-8500₮</li>
-            <li>Күртки: 10000₮-20000₮</li>
-            <li>Хайрцагтай гутал: 8000₮-15000₮</li>
-            <li>Хайрцагтай бараа: 3800₮-200000₮ үнэлэгдэхүйц бараа ирэх боломжтой!!!</li>
-          </ul> <br>
-          
-          Шуурхай тээврээр том ачаа ирэхгүй болохыг анхаарна уу!! (Шалтгаан: Өндөр үнэтэй болно) <br> <br>
-          
-          1м³ = 1250¥ <br> <br>
-          
-          Хүнд ачаа Кг-р: 1кг = 3800₮  <br> <br>
-          
-          Санамж: Жин их, овор хэмжээ бага ачааг жингээр бодно. Жин бага, овор хэмжээ ихтэй ачааг овор хэмжээгээр бодно. 
-          Овор хэмжээ ихтэй тоног төхөөрөмж, техник хэрэгсэл үнэлгээ өөр учир захиалга хийхээс өмнө асууж тодруулна уу. <br>
+        <b>🚛 1. ЭНГИЙН ТЭЭВЭР</b><br>
+        <ul>
+          <li>0–100гр → 2000₮</li>
+          <li>100гр–1кг → 3000₮</li>
+          <li>1кг-с дээш → 3000₮/кг</li>
+          <li>Гутлын хайрцаг → 8000-10000₮</li>
+          <li>Овроор: 1м³ = 800¥</li>
+        </ul>
+        <br>
+        <hr><br>
+        <b>⚡ 2. ШУУРХАЙ ТЭЭВЭР</b><br>
+        <ul>
+          <li>0–100гр → 3000₮</li>
+          <li>100гр–1кг → 3500₮</li>
+          <li>Гутлын хайрцаг → 8000₮-13000₮</li>
+          <li>Овортой түүвэр ачаа → 3500₮-с эхлэнэ</li>
+        </ul>
+        <br>
+        <b>⚠️ Анхааруулга:</b><br>
+        Шуурхай тээврээр овор ихтэй ачаа ирэхгүй.<br>
+        Жишээ нь — гутлын хайрцагнаас жижиг хэмжээтэй ачаа шуурхай тээврээр ирэх боломжтой.<br><br>
+        <hr><br>
+        <b>💡 Жин ихтэй бага оврын ачааг жингээр, оврын хэмжээ ихтэй ачааг овроор тооцно.</b>
       </div>
     </div>
   </div>
@@ -187,7 +152,7 @@ const calculateNormalDelivery = (volume, weight) => {
   // Use the higher price
   calculatedPrice.value = Math.max(priceByVolume, priceByWeight)
   calculationMethod.value = priceByVolume > priceByWeight ? 
-    'Эзлэхүүнээр тооцсон (850¥/м³)' : 'Жингээр нь тооцсон (2,500₮/кг)'
+    'Эзлэхүүнээр тооцсон (850¥/м³)' : 'Жингээр нь тооцсон (3,000₮/кг)'
 }
 
 const calculateQuickDelivery = (volume, weight) => {
@@ -197,9 +162,9 @@ const calculateQuickDelivery = (volume, weight) => {
   if (weight <= 0.1) {
     priceByWeight = 2000
   } else if (weight <= 1) {
-    priceByWeight = 3800
+    priceByWeight = 3500
   } else {
-    priceByWeight = weight * 3800
+    priceByWeight = weight * 3500
   }
 
   calculatedPrice.value = Math.max(priceByVolume, priceByWeight)
