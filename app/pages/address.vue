@@ -205,7 +205,7 @@ const locations = [
   { id: '2', name: '21-р хороолол', regular: 'K', express: 'M' },
   { id: '3', name: 'Төмөр Зам', regular: 'X', express: 'Н' },
   { id: '4', name: '19 үйлчилгээний төв', regular: '巴', express: 'B' },
-  { id: '5', name: '3,4-р хороолол гэмтэл', regular: '风', express: 'J' },
+  // { id: '5', name: '3,4-р хороолол гэмтэл', regular: '风', express: 'J' },
 ]
 
 const user = ref({

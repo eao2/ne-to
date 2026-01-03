@@ -52,11 +52,10 @@
         </div>
     </section>
 
-    <section class="delivery-settings">
+    <!-- <section class="delivery-settings">
         <h2>Хүргэлт:</h2>
         
         <div class="info-items">
-        <!-- Delivery Address -->
         <div class="info-item" @click="router.push('/delivery-address')">
             <div class="icon">
                 <img src="/account/delivery-location.svg" alt="">
@@ -72,7 +71,6 @@
             </div>
         </div>
 
-        <!-- Auto Delivery Toggle -->
         <div class="info-item">
             <div class="icon">
                 <img src="/account/auto-delivery-request.svg" alt="">
@@ -96,7 +94,7 @@
             </Switch>
         </div>
         </div>
-    </section>
+    </section> -->
 
     <div class="floating-button">
         <button @click="handleLogout" class="button">

@@ -194,17 +194,17 @@ const branches = [
         location: 'Хан-уул дүүрэг 2-р хороо 9-р байр Жаргалант салоны хажууд',
         image: "https://placehold.co/200x200/4299e1/ffffff?text=19 үйлчилгээний төв" 
     },
-    { 
-        id: 5, 
-        name: "3,4-р хороолол гэмтэл", 
-        phoneNumber: "89903381, 85601541",
-        lat: 47.9207139, 
-        lng: 106.8593221, 
-        hours: "15:00-21:20", 
-        days: "Даваа-Бямба", 
-        location: 'БГД-31 хороо 65-р байр', 
-        image: "https://placehold.co/200x200/4299e1/ffffff?text=3,4-р хороолол гэмтэл" 
-    },
+    // { 
+    //     id: 5, 
+    //     name: "3,4-р хороолол гэмтэл", 
+    //     phoneNumber: "89903381, 85601541",
+    //     lat: 47.9207139, 
+    //     lng: 106.8593221, 
+    //     hours: "15:00-21:20", 
+    //     days: "Даваа-Бямба", 
+    //     location: 'БГД-31 хороо 65-р байр', 
+    //     image: "https://placehold.co/200x200/4299e1/ffffff?text=3,4-р хороолол гэмтэл" 
+    // },
 ];
 
 selectedBranch.value = branches[0];

@@ -26,6 +26,7 @@
     "vue-sonner": "^2.0.2"
   },
   "devDependencies": {
+    "prisma": "^6.16.2",
     "sass-embedded": "^1.90.0"
   }
 }
